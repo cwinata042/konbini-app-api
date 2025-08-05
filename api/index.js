@@ -19,12 +19,12 @@ function checkAPIKey(req, res, next) {
 const app = express();
 
 // route imports
-const taskRoute = require("./routes/task.route");
-const storeItemRoute = require("./routes/storeItem.route");
-const goalRoute = require("./routes/goal.route");
-const trackedTaskRoute = require("./routes/trackedTask.route");
-const purchasedItemRoute = require("./routes/purchasedItem.route");
-const weightRoute = require("./routes/weight.route");
+const taskRoute = require("../routes/task.route");
+const storeItemRoute = require("../routes/storeItem.route");
+const goalRoute = require("../routes/goal.route");
+const trackedTaskRoute = require("../routes/trackedTask.route");
+const purchasedItemRoute = require("../routes/purchasedItem.route");
+const weightRoute = require("../routes/weight.route");
 
 // middleware
 app.use(express.json());
