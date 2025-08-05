@@ -32,6 +32,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(checkAPIKey);
 
 // routes
+app.use("/", (req, res) => {
+  res.send("Welcome to the konbini API!");
+});
 app.use("/api/tasks", taskRoute);
 app.use("/api/storeItems", storeItemRoute);
 app.use("/api/goals", goalRoute);
