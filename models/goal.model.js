@@ -1,27 +1,25 @@
 const mongoose = require("mongoose");
 
-const TaskSchema = mongoose.Schema(
+const GoalSchema = mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
     },
-    type: {
+    description: {
       type: String,
-      enum: ["Timed", "Single"],
       required: true,
     },
-    category: {
-      type: String,
-      enum: ["Exercise", "Habit"],
-      required: true,
+    deadline: {
+      type: Date,
+      required: false,
     },
     points: {
       type: Number,
       required: true,
     },
-    counter_name: {
-      type: String,
+    items_unlocked: {
+      type: [mongoose.ObjectId],
       required: false,
     },
   },
@@ -30,6 +28,6 @@ const TaskSchema = mongoose.Schema(
   }
 );
 
-const Task = mongoose.model("Task", TaskSchema);
+const Goal = mongoose.model("Goal", GoalSchema);
 
-module.exports = Task;
+module.exports = Goal;

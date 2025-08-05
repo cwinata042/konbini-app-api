@@ -1,28 +1,53 @@
-const express = require('express')
-const mongoose = require('mongoose')
+const express = require("express");
+const https = require("https");
+const mongoose = require("mongoose");
 
-const app = express()
+require("dotenv").config();
+const URI = process.env.ATLAS_URI;
+const API_KEY = process.env.API_KEY;
 
-app.use(express.json())
+function checkAPIKey(req, res, next) {
+  const apiKey = req.query.api_key || req.headers["x-api-key"];
 
-app.get('/', (req, res) => {
-    res.send("You called? :D")
-})
+  if (apiKey === API_KEY) {
+    next();
+  } else {
+    res.status(403).send("Forbidden: Invalid API Key");
+  }
+}
 
-app.get('/api/tasks', (req, res) => {
+const app = express();
 
-})
-app.post('/api/tasks', (req, res) => {
-    res.send(req.body)
-})
+// route imports
+const taskRoute = require("./routes/task.route");
+const storeItemRoute = require("./routes/storeItem.route");
+const goalRoute = require("./routes/goal.route");
+const trackedTaskRoute = require("./routes/trackedTask.route");
+const purchasedItemRoute = require("./routes/purchasedItem.route");
+const weightRoute = require("./routes/weight.route");
 
-mongoose.connect("mongodb+srv://cwinata042:2kuK7EvkKxQLg8ZI@cluster0.pqfumam.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(() => {
-    console.log("Connected to database!")
+// middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(checkAPIKey);
+
+// routes
+app.use("/api/tasks", taskRoute);
+app.use("/api/storeItems", storeItemRoute);
+app.use("/api/goals", goalRoute);
+app.use("/api/trackedTasks", trackedTaskRoute);
+app.use("/api/purchasedItems", purchasedItemRoute);
+app.use("/api/weight", weightRoute);
+
+mongoose
+  .connect(URI)
+  .then(() => {
+    console.log("Connected to database!");
 
     app.listen(3000, () => {
-        console.log("Server is running on port 3000...")
-    })
-})
-.catch(() => {
-    console.log("Connection to database failed!")
-})
+      console.log("Server is running on port 3000...");
+    });
+  })
+  .catch(() => {
+    console.log("Connection to database failed!");
+  });
